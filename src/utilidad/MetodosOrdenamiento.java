@@ -3,10 +3,7 @@ package utilidad;
 
 import datos.Anime;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,7 +11,7 @@ import java.util.List;
  * @author Cristopher Soto
  */
 public class MetodosOrdenamiento {
-    public void bubbleSortArrayList(ArrayList<Anime> list) {
+    public void bubbleSortArrayListAsc(ArrayList<Anime> list) {
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < list.size() - i - 1; j++) {
                 if (list.get(j).getNombre().compareTo(list.get(j + 1).getNombre()) > 0) {
@@ -25,8 +22,18 @@ public class MetodosOrdenamiento {
             }
         }
     }
-
-    public void mergeSortArrayList(ArrayList<Anime> list) {
+    public void bubbleSortArrayListDes(ArrayList<Anime> list) {
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = 0; j < list.size() - i - 1; j++) {
+                if (list.get(j).getNombre().compareTo(list.get(j + 1).getNombre()) < 0) {
+                    Anime aux = list.get(j);
+                    list.set(j, list.get(j + 1));
+                    list.set(j + 1, aux);
+                }
+            }
+        }
+    }
+    public void mergeSortArrayListAsc(ArrayList<Anime> list) {
         if (list.size() <= 1) {
             return; // La lista ya está ordenada o vacía
         }
@@ -36,14 +43,29 @@ public class MetodosOrdenamiento {
         ArrayList<Anime> parteDerecha = new ArrayList<>(list.subList(medio, list.size()));
 
         // Llamada recursiva para ordenar las dos mitades
-        mergeSortArrayList(parteIzquierda);
-        mergeSortArrayList(parteDerecha);
+        mergeSortArrayListAsc(parteIzquierda);
+        mergeSortArrayListAsc(parteDerecha);
 
         // Combinar las dos partes ordenadas
-        mergeArrayList(list, parteIzquierda, parteDerecha);
+        mergeArrayListAsc(list, parteIzquierda, parteDerecha);
     }
+    public void mergeSortArrayListDes(ArrayList<Anime> list) {
+        if (list.size() <= 1) {
+            return; // La lista ya está ordenada o vacía
+        }
 
-    private void mergeArrayList(List<Anime> list, List<Anime> parteIzquierda, List<Anime> parteDerecha) {
+        int medio = list.size() / 2;
+        ArrayList<Anime> parteIzquierda = new ArrayList<>(list.subList(0, medio));
+        ArrayList<Anime> parteDerecha = new ArrayList<>(list.subList(medio, list.size()));
+
+        // Llamada recursiva para ordenar las dos mitades
+        mergeSortArrayListDes(parteIzquierda);
+        mergeSortArrayListDes(parteDerecha);
+
+        // Combinar las dos partes ordenadas
+        mergeArrayListDes(list, parteIzquierda, parteDerecha);
+    }
+    private void mergeArrayListAsc(List<Anime> list, List<Anime> parteIzquierda, List<Anime> parteDerecha) {
         int i = 0; // Índice para recorrer la parte izquierda
         int j = 0; // Índice para recorrer la parte derecha
         int k = 0; // Índice para recorrer la lista original
@@ -74,68 +96,120 @@ public class MetodosOrdenamiento {
             k++;
         }
     }
+    private void mergeArrayListDes(List<Anime> list, List<Anime> parteIzquierda, List<Anime> parteDerecha) {
+        int i = 0; // Índice para recorrer la parte izquierda
+        int j = 0; // Índice para recorrer la parte derecha
+        int k = 0; // Índice para recorrer la lista original
 
-    public void radixSort(ArrayList<Anime> list) {
-        if (list.isEmpty()) {
-            return;
-        }
-
-        // Encuentra la longitud máxima del nombre
-        int maxLength = getMaxNameLength(list);
-
-        // Aplica el algoritmo de Radix Sort en cada dígito del nombre
-        for (int digit = maxLength - 1; digit >= 0; digit--) {
-            countingSort(list, digit);
-        }
-    }
-
-    private int getMaxNameLength(ArrayList<Anime> list) {
-        int maxLength = 0;
-        for (Anime anime : list) {
-            int nameLength = anime.getNombre().length();
-            if (nameLength > maxLength) {
-                maxLength = nameLength;
+        // Combinar las dos partes en orden ascendente
+        while (i < parteIzquierda.size() && j < parteDerecha.size()) {
+            if (parteIzquierda.get(i).getNombre().compareTo(parteDerecha.get(j).getNombre()) >= 0) {
+                list.set(k, parteIzquierda.get(i));
+                i++;
+            } else {
+                list.set(k, parteDerecha.get(j));
+                j++;
             }
+            k++;
         }
-        return maxLength;
+
+        // Copiar los elementos restantes de la parte izquierda
+        while (i < parteIzquierda.size()) {
+            list.set(k, parteIzquierda.get(i));
+            i++;
+            k++;
+        }
+
+        // Copiar los elementos restantes de la parte derecha
+        while (j < parteDerecha.size()) {
+            list.set(k, parteDerecha.get(j));
+            j++;
+            k++;
+        }
     }
-
-    private void countingSort(ArrayList<Anime> list, int digit) {
-        final int radix = 256; // Considerando caracteres ASCII
-        int[] count = new int[radix];
-        ArrayList<Anime> sortedList = new ArrayList<>(list.size());
-
-        // Realiza el conteo de ocurrencias de cada carácter
-        for (Anime anime : list) {
-            int nameLength = anime.getNombre().length();
-            int charIndex = (digit < nameLength) ? anime.getNombre().charAt(digit) : 0;
-            count[charIndex]++;
+    public void radixSortAsc(ArrayList<Anime> animes) {
+        // Encuentra la longitud máxima del nombre de los animes
+        int maxLength = 0;
+        for (Anime anime : animes) {
+            maxLength = Math.max(maxLength, anime.getNombre().length());
         }
 
-        // Calcula las posiciones finales de cada carácter en la lista ordenada
+        // Realiza el ordenamiento por cada dígito, comenzando desde la posición menos significativa
+        for (int digitIndex = maxLength - 1; digitIndex >= 0; digitIndex--) {
+            countingSortAsc(animes, digitIndex);
+        }
+    }
+    public static void radixSortDes(ArrayList<Anime> animes) {
+        // Encuentra la longitud máxima del nombre de los animes
+        int maxLength = 0;
+        for (Anime anime : animes) {
+            maxLength = Math.max(maxLength, anime.getNombre().length());
+        }
+
+        // Realiza el ordenamiento por cada dígito, comenzando desde la posición menos significativa
+        for (int digitIndex = maxLength - 1; digitIndex >= 0; digitIndex--) {
+            countingSortDes(animes, digitIndex);
+        }
+    }
+    public static void countingSortAsc(ArrayList<Anime> animes, int digitIndex) {
+        final int radix = 256; // Número de caracteres ASCII posibles
+
+        int[] count = new int[radix];
+        ArrayList<Anime> sortedAnimes = new ArrayList<>(animes.size());
+
+        // Contar la frecuencia de cada carácter en la posición actual
+        for (Anime anime : animes) {
+            String nombre = anime.getNombre();
+            int index = digitIndex < nombre.length() ? nombre.charAt(digitIndex) : 0;
+            count[index]++;
+        }
+
+        // Calcular las posiciones finales de los caracteres
         for (int i = 1; i < radix; i++) {
             count[i] += count[i - 1];
         }
 
-        // Ordena los elementos en la lista temporalmente
-        for (int i = list.size() - 1; i >= 0; i--) {
-            Anime anime = list.get(i);
-            int nameLength = anime.getNombre().length();
-            int charIndex = (digit < nameLength) ? anime.getNombre().charAt(digit) : 0;
-            sortedList.set(--count[charIndex], anime);
+        // Construir el array ordenado
+        for (int i = animes.size() - 1; i >= 0; i--) {
+            String nombre = animes.get(i).getNombre();
+            int index = digitIndex < nombre.length() ? nombre.charAt(digitIndex) : 0;
+            sortedAnimes.set(--count[index], animes.get(i));
         }
 
-        // Actualiza la lista original con los elementos ordenados
-        for (int i = 0; i < list.size(); i++) {
-            list.set(i, sortedList.get(i));
+        // Actualizar el ArrayList original con los elementos ordenados
+        for (int i = 0; i < animes.size(); i++) {
+            animes.set(i, sortedAnimes.get(i));
         }
     }
+    public static void countingSortDes(ArrayList<Anime> animes, int digitIndex) {
+        final int radix = 256; // Número de caracteres ASCII posibles
 
-    public void imprimirArrayList(List<Integer> list) {
-        for (int num : list) {
-            System.out.print(num + " ");
+        int[] count = new int[radix];
+        ArrayList<Anime> sortedAnimes = new ArrayList<>(animes.size());
+
+        // Contar la frecuencia de cada carácter en la posición actual
+        for (Anime anime : animes) {
+            String nombre = anime.getNombre();
+            int index = digitIndex < nombre.length() ? nombre.charAt(digitIndex) : 0;
+            count[index]++;
         }
-        System.out.println();
+
+        // Calcular las posiciones iniciales de los caracteres en orden descendente
+        for (int i = radix - 2; i >= 0; i--) {
+            count[i] += count[i + 1];
+        }
+
+        // Construir el array ordenado
+        for (int i = animes.size() - 1; i >= 0; i--) {
+            String nombre = animes.get(i).getNombre();
+            int index = digitIndex < nombre.length() ? nombre.charAt(digitIndex) : 0;
+            sortedAnimes.set(--count[index], animes.get(i));
+        }
+
+        // Actualizar el ArrayList original con los elementos ordenados
+        for (int i = 0; i < animes.size(); i++) {
+            animes.set(i, sortedAnimes.get(i));
+        }
     }
     public Anime findMaxNumber(List<Anime> numbers) {
         Anime maxNumber = numbers.get(0);
@@ -146,4 +220,5 @@ public class MetodosOrdenamiento {
         }
         return maxNumber;
     }
+
 }
