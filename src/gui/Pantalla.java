@@ -1,10 +1,14 @@
 package gui;
 
+import datos.Anime;
+import java.util.ArrayList;
+
 /**
  *
  * @author criss
  */
 public class Pantalla extends javax.swing.JFrame {
+    ArrayList<Anime> anime = new ArrayList<Anime>();
     public Pantalla() {
         initComponents();
         this.setTitle("Listado de animes");
@@ -67,8 +71,18 @@ public class Pantalla extends javax.swing.JFrame {
         });
 
         cjAñadir.setText("Añadir");
+        cjAñadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cjAñadirActionPerformed(evt);
+            }
+        });
 
         cjRemover.setText("Remover");
+        cjRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cjRemoverActionPerformed(evt);
+            }
+        });
 
         cjNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,13 +198,13 @@ public class Pantalla extends javax.swing.JFrame {
                             .addComponent(btMergeAsc)
                             .addComponent(btMergeDesc))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btRadixAsc)
-                            .addComponent(btRadixDesc))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btRadixDesc)
+                            .addComponent(btRadixAsc))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btCountingAsc)
-                            .addComponent(btCountingDesc))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btCountingDesc)
+                            .addComponent(btCountingAsc))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cjAñadir)
@@ -235,6 +249,16 @@ public class Pantalla extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbGeneroActionPerformed
 
+    private void cjAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cjAñadirActionPerformed
+        // TODO add your handling code here:
+        añadir();
+    }//GEN-LAST:event_cjAñadirActionPerformed
+
+    private void cjRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cjRemoverActionPerformed
+        // TODO add your handling code here:
+        remover();
+    }//GEN-LAST:event_cjRemoverActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -269,11 +293,33 @@ public class Pantalla extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-
+private void añadir(){
+    Anime a = new Anime();
+    a.nombre = cjNombre.getText();
+    a.temporadas = cjTemporadas.getText();
+    String valor = (String) cbGenero.getSelectedItem();
+    a.setTipo(valor);
+    anime.add(a);
+    this.actualizarListado();
+}
+private void remover(){
+    anime.remove(0);
+    this.actualizarListado();
+}
+private void actualizarListado() {
+    if (anime.isEmpty()) {
+        cjMostrar.setText("No hay elementos en la lista.");
+    } else {
+        StringBuilder sb = new StringBuilder();
+        for (Anime elemento : anime) {
+            sb.append(elemento).append("\n");
+        }
+        cjMostrar.setText(sb.toString());
+    }
+    cjMostrar.setEditable(false);
+}
 private void salir() {
         System.exit(0);
     }
-
-
 }
 
