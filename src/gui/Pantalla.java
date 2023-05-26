@@ -392,8 +392,9 @@ public class Pantalla extends javax.swing.JFrame {
     // End of variables declaration
     private void añadir(){
         Anime a = new Anime();
-        a.nombre = cjNombre.getText();
-        a.temporadas = cjTemporadas.getText();
+        a.setNombre(cjNombre.getText());
+        int temp = Integer.parseInt(cjTemporadas.getText());
+        a.setTemporadas(temp);
         String valor = (String) cbGenero.getSelectedItem();
         a.setTipo(valor);
         anime.add(a);

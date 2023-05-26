@@ -4,6 +4,7 @@ package utilidad;
 import datos.Anime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -128,97 +129,97 @@ public class MetodosOrdenamiento {
         }
     }
     public void radixSortAsc(ArrayList<Anime> animes) {
-        // Encuentra la longitud máxima del nombre de los animes
-        int maxLength = 0;
+        // Encontrar el valor máximo en el número de temporadas
+        int maxSeasons = 0;
         for (Anime anime : animes) {
-            maxLength = Math.max(maxLength, anime.getNombre().length());
+            if (anime.getTemporadas() > maxSeasons) {
+                maxSeasons = anime.getTemporadas();
+            }
         }
 
-        // Realiza el ordenamiento por cada dígito, comenzando desde la posición menos significativa
-        for (int digitIndex = maxLength - 1; digitIndex >= 0; digitIndex--) {
-            countingSortAsc(animes, digitIndex);
+        // Realizar el ordenamiento radix sort
+        for (int exp = 1; maxSeasons / exp > 0; exp *= 10) {
+            countingSortAsc(animes, exp);
         }
     }
-    public static void radixSortDes(ArrayList<Anime> animes) {
-        // Encuentra la longitud máxima del nombre de los animes
-        int maxLength = 0;
-        for (Anime anime : animes) {
-            maxLength = Math.max(maxLength, anime.getNombre().length());
+    public static void radixSortDes(ArrayList<Anime> animeList) {
+        // Encontrar el valor máximo en el número de temporadas
+        int maxSeasons = 0;
+        for (Anime anime : animeList) {
+            if (anime.getTemporadas() > maxSeasons) {
+                maxSeasons = anime.getTemporadas();
+            }
         }
 
-        // Realiza el ordenamiento por cada dígito, comenzando desde la posición menos significativa
-        for (int digitIndex = maxLength - 1; digitIndex >= 0; digitIndex--) {
-            countingSortDes(animes, digitIndex);
+        // Realizar el ordenamiento radix sort
+        for (int exp = 1; maxSeasons / exp > 0; exp *= 10) {
+            countingSortDes(animeList, exp);
         }
     }
-    public static void countingSortAsc(ArrayList<Anime> animes, int digitIndex) {
-        final int radix = 256; // Número de caracteres ASCII posibles
+    public void countingSortAsc(ArrayList<Anime> animes, int exp) {
+        int n = animes.size();
+        ArrayList<Anime> output = new ArrayList<>(Collections.nCopies(n, null));
 
-        int[] count = new int[radix];
-        ArrayList<Anime> sortedAnimes = new ArrayList<>(animes.size());
-
-        // Contar la frecuencia de cada carácter en la posición actual
-        for (Anime anime : animes) {
-            String nombre = anime.getNombre();
-            int index = digitIndex < nombre.length() ? nombre.charAt(digitIndex) : 0;
-            count[index]++;
+        // Inicializar el arreglo de conteo
+        int[] count = new int[10];
+        for (int i = 0; i < 10; i++) {
+            count[i] = 0;
         }
 
-        // Calcular las posiciones finales de los caracteres
-        for (int i = 1; i < radix; i++) {
+        // Contar el número de ocurrencias de cada dígito en la posición actual
+        for (int i = 0; i < n; i++) {
+            int digit = (animes.get(i).getTemporadas() / exp) % 10;
+            count[digit]++;
+        }
+
+        // Calcular las posiciones actuales de los elementos en la lista ordenada
+        for (int i = 1; i < 10; i++) {
             count[i] += count[i - 1];
         }
 
-        // Construir el array ordenado
-        for (int i = animes.size() - 1; i >= 0; i--) {
-            String nombre = animes.get(i).getNombre();
-            int index = digitIndex < nombre.length() ? nombre.charAt(digitIndex) : 0;
-            sortedAnimes.set(--count[index], animes.get(i));
+        // Construir la lista ordenada
+        for (int i = n - 1; i >= 0; i--) {
+            int digit = (animes.get(i).getTemporadas() / exp) % 10;
+            output.set(count[digit] - 1, animes.get(i));
+            count[digit]--;
         }
 
-        // Actualizar el ArrayList original con los elementos ordenados
-        for (int i = 0; i < animes.size(); i++) {
-            animes.set(i, sortedAnimes.get(i));
+        // Copiar la lista ordenada al arreglo original
+        for (int i = 0; i < n; i++) {
+            animes.set(i, output.get(i));
         }
     }
-    public static void countingSortDes(ArrayList<Anime> animes, int digitIndex) {
-        final int radix = 256; // Número de caracteres ASCII posibles
+    public static void countingSortDes(ArrayList<Anime> animeList, int exp) {
+        int n = animeList.size();
+        ArrayList<Anime> output = new ArrayList<>(Collections.nCopies(n, null));
 
-        int[] count = new int[radix];
-        ArrayList<Anime> sortedAnimes = new ArrayList<>(animes.size());
-
-        // Contar la frecuencia de cada carácter en la posición actual
-        for (Anime anime : animes) {
-            String nombre = anime.getNombre();
-            int index = digitIndex < nombre.length() ? nombre.charAt(digitIndex) : 0;
-            count[index]++;
+        // Inicializar el arreglo de conteo
+        int[] count = new int[10];
+        for (int i = 0; i < 10; i++) {
+            count[i] = 0;
         }
 
-        // Calcular las posiciones iniciales de los caracteres en orden descendente
-        for (int i = radix - 2; i >= 0; i--) {
+        // Contar el número de ocurrencias de cada dígito en la posición actual
+        for (int i = 0; i < n; i++) {
+            int digit = (animeList.get(i).getTemporadas() / exp) % 10;
+            count[digit]++;
+        }
+
+        // Calcular las posiciones actuales de los elementos en la lista ordenada
+        for (int i = 8; i >= 0; i--) {
             count[i] += count[i + 1];
         }
 
-        // Construir el array ordenado
-        for (int i = animes.size() - 1; i >= 0; i--) {
-            String nombre = animes.get(i).getNombre();
-            int index = digitIndex < nombre.length() ? nombre.charAt(digitIndex) : 0;
-            sortedAnimes.set(--count[index], animes.get(i));
+        // Construir la lista ordenada
+        for (int i = n - 1; i >= 0; i--) {
+            int digit = (animeList.get(i).getTemporadas() / exp) % 10;
+            output.set(count[digit] - 1, animeList.get(i));  // Aquí se ha corregido el índice
+            count[digit]--;
         }
 
-        // Actualizar el ArrayList original con los elementos ordenados
-        for (int i = 0; i < animes.size(); i++) {
-            animes.set(i, sortedAnimes.get(i));
+        // Copiar la lista ordenada al arreglo original
+        for (int i = 0; i < n; i++) {
+            animeList.set(i, output.get(i));
         }
     }
-    public Anime findMaxNumber(List<Anime> numbers) {
-        Anime maxNumber = numbers.get(0);
-        for (int i = 1; i < numbers.size(); i++) {
-            if (numbers.get(i).getNombre().compareTo(maxNumber.getNombre()) > 0) {
-                maxNumber = numbers.get(i);
-            }
-        }
-        return maxNumber;
-    }
-
 }
