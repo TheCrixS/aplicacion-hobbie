@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author criss
+ * @author Cristopher soto
  */
 public class Pantalla extends javax.swing.JFrame {
     ArrayList<Anime> anime = new ArrayList<Anime>();

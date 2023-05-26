@@ -1,21 +1,18 @@
 package datos;
 
 public class Anime {
-    private String nombre;
-    private String tipo;
-    private int temporadas;
+    public String nombre;
+    public String tipo;
+    public String temporadas;
 
-    public Anime(String nombre, String tipo, int temporadas){
-        this.nombre = nombre;
-        this.temporadas = temporadas;
-        this.tipo = tipo;
+    public Anime(){
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public int getTemporadas() {
+    public String getTemporadas() {
         return temporadas;
     }
 
@@ -27,7 +24,7 @@ public class Anime {
         this.nombre = nombre;
     }
 
-    public void setTemporadas(int temporadas) {
+    public void setTemporadas(String temporadas) {
         this.temporadas = temporadas;
     }
 
