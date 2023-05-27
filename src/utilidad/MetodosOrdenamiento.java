@@ -5,6 +5,7 @@ import datos.Anime;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  * @author Cristopher Soto
  */
 public class MetodosOrdenamiento {
-    public void bubbleSortArrayListAsc(ArrayList<Anime> list) {
+    public void bubbleSortArrayListAsc(LinkedList<Anime> list) {
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < list.size() - i - 1; j++) {
                 if (list.get(j).getNombre().compareTo(list.get(j + 1).getNombre()) > 0) {
@@ -23,7 +24,7 @@ public class MetodosOrdenamiento {
             }
         }
     }
-    public void bubbleSortArrayListDes(ArrayList<Anime> list) {
+    public void bubbleSortArrayListDes(LinkedList<Anime> list) {
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < list.size() - i - 1; j++) {
                 if (list.get(j).getNombre().compareTo(list.get(j + 1).getNombre()) < 0) {
@@ -34,14 +35,14 @@ public class MetodosOrdenamiento {
             }
         }
     }
-    public void mergeSortArrayListAsc(ArrayList<Anime> list) {
+    public void mergeSortArrayListAsc(LinkedList<Anime> list) {
         if (list.size() <= 1) {
             return; // La lista ya está ordenada o vacía
         }
 
         int medio = list.size() / 2;
-        ArrayList<Anime> parteIzquierda = new ArrayList<>(list.subList(0, medio));
-        ArrayList<Anime> parteDerecha = new ArrayList<>(list.subList(medio, list.size()));
+        LinkedList<Anime> parteIzquierda = new LinkedList<>(list.subList(0, medio));
+        LinkedList<Anime> parteDerecha = new LinkedList<>(list.subList(medio, list.size()));
 
         // Llamada recursiva para ordenar las dos mitades
         mergeSortArrayListAsc(parteIzquierda);
@@ -50,14 +51,14 @@ public class MetodosOrdenamiento {
         // Combinar las dos partes ordenadas
         mergeArrayListAsc(list, parteIzquierda, parteDerecha);
     }
-    public void mergeSortArrayListDes(ArrayList<Anime> list) {
+    public void mergeSortArrayListDes(LinkedList<Anime> list) {
         if (list.size() <= 1) {
             return; // La lista ya está ordenada o vacía
         }
 
         int medio = list.size() / 2;
-        ArrayList<Anime> parteIzquierda = new ArrayList<>(list.subList(0, medio));
-        ArrayList<Anime> parteDerecha = new ArrayList<>(list.subList(medio, list.size()));
+        LinkedList<Anime> parteIzquierda = new LinkedList<>(list.subList(0, medio));
+        LinkedList<Anime> parteDerecha = new LinkedList<>(list.subList(medio, list.size()));
 
         // Llamada recursiva para ordenar las dos mitades
         mergeSortArrayListDes(parteIzquierda);
@@ -66,7 +67,7 @@ public class MetodosOrdenamiento {
         // Combinar las dos partes ordenadas
         mergeArrayListDes(list, parteIzquierda, parteDerecha);
     }
-    private void mergeArrayListAsc(List<Anime> list, List<Anime> parteIzquierda, List<Anime> parteDerecha) {
+    private void mergeArrayListAsc(LinkedList<Anime> list, LinkedList<Anime> parteIzquierda, LinkedList<Anime> parteDerecha) {
         int i = 0; // Índice para recorrer la parte izquierda
         int j = 0; // Índice para recorrer la parte derecha
         int k = 0; // Índice para recorrer la lista original
@@ -97,7 +98,7 @@ public class MetodosOrdenamiento {
             k++;
         }
     }
-    private void mergeArrayListDes(List<Anime> list, List<Anime> parteIzquierda, List<Anime> parteDerecha) {
+    private void mergeArrayListDes(LinkedList<Anime> list, LinkedList<Anime> parteIzquierda, LinkedList<Anime> parteDerecha) {
         int i = 0; // Índice para recorrer la parte izquierda
         int j = 0; // Índice para recorrer la parte derecha
         int k = 0; // Índice para recorrer la lista original
@@ -128,7 +129,7 @@ public class MetodosOrdenamiento {
             k++;
         }
     }
-    public void radixSortAsc(ArrayList<Anime> animes) {
+    public void radixSortAsc(LinkedList<Anime> animes) {
         // Encontrar el valor máximo en el número de temporadas
         int maxSeasons = 0;
         for (Anime anime : animes) {
@@ -142,7 +143,7 @@ public class MetodosOrdenamiento {
             countingSortAsc(animes, exp);
         }
     }
-    public static void radixSortDes(ArrayList<Anime> animeList) {
+    public static void radixSortDes(LinkedList<Anime> animeList) {
         // Encontrar el valor máximo en el número de temporadas
         int maxSeasons = 0;
         for (Anime anime : animeList) {
@@ -156,7 +157,7 @@ public class MetodosOrdenamiento {
             countingSortDes(animeList, exp);
         }
     }
-    public void countingSortAsc(ArrayList<Anime> animes, int exp) {
+    public void countingSortAsc(LinkedList<Anime> animes, int exp) {
         int n = animes.size();
         ArrayList<Anime> output = new ArrayList<>(Collections.nCopies(n, null));
 
@@ -189,7 +190,7 @@ public class MetodosOrdenamiento {
             animes.set(i, output.get(i));
         }
     }
-    public static void countingSortDes(ArrayList<Anime> animeList, int exp) {
+    public static void countingSortDes(LinkedList<Anime> animeList, int exp) {
         int n = animeList.size();
         ArrayList<Anime> output = new ArrayList<>(Collections.nCopies(n, null));
 

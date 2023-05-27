@@ -2,6 +2,8 @@ package gui;
 
 import datos.Anime;
 import java.util.ArrayList;
+import java.util.LinkedList;
+
 import utilidad.MetodosOrdenamiento;
 
 /**
@@ -9,7 +11,7 @@ import utilidad.MetodosOrdenamiento;
  * @author Cristopher Soto
  */
 public class Pantalla extends javax.swing.JFrame {
-    private ArrayList<Anime> anime = new ArrayList<Anime>();
+    private LinkedList<Anime> anime = new LinkedList<>();
     public Pantalla() {
         initComponents();
         this.setTitle("Listado de animes");
