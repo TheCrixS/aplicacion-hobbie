@@ -601,10 +601,12 @@ public class Pantalla extends javax.swing.JFrame {
         a.setTipo(valor);
         anime.add(a);
         this.actualizarListado();
+        animeArray = anime.toArray(new Anime[anime.size()]);
+        this.actualizarListadoArray();
     }
     private void remover(){
         anime.remove(0);
-        eliminarPrimerElemento(animeArray);
+        animeArray = anime.toArray(new Anime[anime.size()]);
         this.actualizarListadoArray();
         this.actualizarListado();
     }
@@ -637,18 +639,7 @@ public class Pantalla extends javax.swing.JFrame {
     }
     private void transferir(){
         animeArray = anime.toArray(new Anime[anime.size()]);
-        actualizarListadoArray();
-    }
-    public Anime[] eliminarPrimerElemento(Anime[] arr) {
-        if (arr == null || arr.length == 0) {
-            // Si el arreglo está vacío o es nulo, no hay nada que eliminar
-            return arr;
-        }
-
-        Anime[] newArr = new Anime[arr.length - 1];
-        System.arraycopy(arr, 1, newArr, 0, arr.length - 1);
-
-        return newArr;
+        this.actualizarListadoArray();
     }
 }
 
