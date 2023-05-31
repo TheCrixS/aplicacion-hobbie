@@ -6,7 +6,6 @@ import datos.Anime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  *
@@ -143,7 +142,7 @@ public class MetodosOrdenamiento {
             countingSortAsc(animes, exp);
         }
     }
-    public static void radixSortDes(LinkedList<Anime> animeList) {
+    public void radixSortDes(LinkedList<Anime> animeList) {
         // Encontrar el valor máximo en el número de temporadas
         int maxSeasons = 0;
         for (Anime anime : animeList) {
@@ -190,7 +189,7 @@ public class MetodosOrdenamiento {
             animes.set(i, output.get(i));
         }
     }
-    public static void countingSortDes(LinkedList<Anime> animeList, int exp) {
+    public void countingSortDes(LinkedList<Anime> animeList, int exp) {
         int n = animeList.size();
         ArrayList<Anime> output = new ArrayList<>(Collections.nCopies(n, null));
 

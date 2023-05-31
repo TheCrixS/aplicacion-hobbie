@@ -1,7 +1,6 @@
 package gui;
 
 import datos.Anime;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import utilidad.MetodosOrdenamiento;
@@ -15,18 +14,12 @@ public class Pantalla extends javax.swing.JFrame {
     public Pantalla() {
         initComponents();
         this.setTitle("Listado de animes");
+        setLocationRelativeTo(null);
+        String[] generos = {"Shounen","Shoujo","Seinen","Josei","Kodomo","Mecha","Ecchi","Hentai","Isekai","Gore","Sports"};
         cbGenero.removeAllItems();
-        cbGenero.addItem("Shounen");
-        cbGenero.addItem("Shoujo");
-        cbGenero.addItem("Seinen");
-        cbGenero.addItem("Josei");
-        cbGenero.addItem("Kodomo");
-        cbGenero.addItem("Mecha");
-        cbGenero.addItem("Ecchi");
-        cbGenero.addItem("Hentai");
-        cbGenero.addItem("Isekai");
-        cbGenero.addItem("Gore");
-        cbGenero.addItem("Sports");
+        for (String genero : generos) {
+            cbGenero.addItem(genero);
+        }
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">

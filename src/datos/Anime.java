@@ -33,6 +33,6 @@ public class Anime {
     }
     @Override
     public String toString() {
-        return "nombre: "+nombre+"\ntipo: "+tipo+"\ntemporadas: "+temporadas;
+        return "nombre: "+nombre+" - tipo: "+tipo+" - temporadas: "+temporadas;
     }
 }
